@@ -1,0 +1,9 @@
+database:
+  host: "localhost"
+  port: 3307
+  name: "DB_NAME"
+  user: "DB_USER"
+  pass: "DB_PASS" 
+app:
+  host: "0.0.0.0"
+  port: 3030
