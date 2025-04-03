@@ -49,7 +49,25 @@ class Database {
       query = query.slice(0, -1)
       query += ` Where id = ?`
       values.push(id)
-      console.log(query)
+      this.#conn.query(query, values, (err, result, _field) => {
+        if (err) reje(err)
+        res(result)
+      })
+    })
+  }
+
+  updateProduct(id, product) {
+    return new Promise((res, reje) => {
+      const values = []
+      let query = "Update Produto SET "
+      for (const field in product) {
+        query += `${field} = ?,`
+        values.push(product[field])
+      }
+
+      query = query.slice(0, -1)
+      query += ` Where id = ?`
+      values.push(id)
       this.#conn.query(query, values, (err, result, _field) => {
         if (err) reje(err)
         res(result)
@@ -60,6 +78,18 @@ class Database {
   findByCpf(cpf) {
     return new Promise((resolve, reject) => {
       this.#conn.query("SELECT * FROM User WHERE cpf = ?", cpf, (err, result, _fields) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(result)
+        }
+      })
+    })
+  }
+
+  findProductByName(name) {
+    return new Promise((resolve, reject) => {
+      this.#conn.query("SELECT * FROM Produto WHERE name = ?", name, (err, result, _fields) => {
         if (err) {
           reject(err)
         } else {
@@ -81,6 +111,31 @@ class Database {
     })
   }
 
+  findProductById(Id) {
+    return new Promise((resolve, reject) => {
+      this.#conn.query("SELECT * FROM Produto WHERE id = ?", Id, (err, result, _fields) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(result)
+        }
+      })
+    })
+  }
+
+  findProducts() {
+    return new Promise((resolve, reject) => {
+      this.#conn.query("SELECT * FROM Produto", (err, result, _fields) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(result)
+        }
+      })
+    })
+  }
+
+
   findUsers() {
     return new Promise((resolve, reject) => {
       this.#conn.query("SELECT * FROM User", (err, result, _fields) => {
@@ -96,6 +151,15 @@ class Database {
   deleteUser(id) {
     return new Promise((resolve, reje) => {
       this.#conn.query("DELETE FROM User WHERE id = ?", id, (err, result, _field) => {
+        if (err) reje(err)
+        resolve(result)
+      })
+    })
+  }
+
+  deleteProduct(id) {
+    return new Promise((resolve, reje) => {
+      this.#conn.query("DELETE FROM Produto WHERE id = ?", id, (err, result, _field) => {
         if (err) reje(err)
         resolve(result)
       })
