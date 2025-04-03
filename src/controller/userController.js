@@ -39,7 +39,12 @@ async function updateUser(req, res) {
     if (!req.body) return res.status(400).send({ msg: "Bad request!" })
     const { name, tel, cpf } = req.body
 
+
     if (!name && !tel && !cpf) return res.status(400).send({ msg: "Bad request!" })
+
+    if (name && name.length < 3) return res.status(400).send({ msg: "Bad request!", reason: "Name must be minimun 3 characters" })
+    if (pass && pass.length < 4) return res.status(400).send({ msg: "Bad request!", reason: "Password must be minimun 8 characters" })
+    if (cpf && cpf.length != 11) return res.status(400).send({ msg: "Bad request!", reason: "CPF need to have 11 characters" })
 
     const result = await modelUser.updateUser(id, name, tel, cpf)
     return res.status(result.code).send(result.msg)
