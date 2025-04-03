@@ -1,4 +1,3 @@
-import { exit } from "process";
 import Database from "../config/database.js";
 import crypto from "crypto"
 
@@ -50,8 +49,6 @@ async function updateUser(id, n, t, c) {
         tel: t ??= user[0].tel,
         cpf: c ??= user[0].cpf,
     }
-    console.log(user)
-    console.log(newUser)
 
     const update = await db.updateUser(id, newUser)
     if (update.affectedRows > 0) return { ok: true, code: 200, msg: "Updated!" }
